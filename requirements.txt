@@ -1,4 +1,5 @@
 replicate
 colorama
 python-dotenv
-python-telegram-bot
+python-telegram-bot==20.2
+pipreqs==0.4.11
