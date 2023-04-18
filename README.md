@@ -43,7 +43,7 @@ IMPORTANT!!! All intents on discord bot page should be enabled
 6. Create new file in directory `kandinsky-discord-bot` with name `.env`, content of this file should be:
 ```
 REPLICATE_API_TOKEN=<paste your replicate token here instead of this text and ><>
-DISCORD_TOKEN=<paste here your discord bot token instead of this text and ><>
+TELEGRAM_BOT_TOKEN=<paste here your discord bot token instead of this text and ><>
 ```
 
 7. Run bot by command:
