@@ -1,40 +1,46 @@
-"""author`s discord - xeon-m#7477
-
-import needed modules"""
-import discord
-from discord import option
-from discord.ext import commands
+# Импортируем нужные модули для Telegram-бота
+import os
 import replicate
 from dotenv import load_dotenv
-import os
-from colorama import init, Fore, Back, Style
-import json
-#load variables with replicate and discord api token
-load_dotenv()
-ds_token = os.environ['DISCORD_TOKEN']
-#define discord bot
-bot = commands.Bot(command_prefix=">", intents=discord.Intents.all())
-#event that will print message when bot will be ready
-@bot.event
-async def on_ready():
-    print("-----------------------------------")
-    print(f"{Fore.GREEN}       loggined as {bot.user.display_name}       {Fore.RESET}")
-    print("-----------------------------------")
-#define slash command kandinsky
-@bot.slash_command(name="kandinsky", description="Create images with Kandinsky2.1")
-@option("prompt", description="Enter a prompt for image")
-@option("steps", description="Enter steps value(1-500)", min_value=1, max_value=500, default=50) #define options for slash command
-@option("scale", description="Enter scale value(1-20)", min_value=1, max_value=20, default=4)
-async def kandinsky(ctx, prompt:str, steps:int, scale:float): #function of slash command
-    embed1 = discord.Embed(title="Job in progress...", color=0xff0000,
-                           description=f"```propmpt:{prompt}\nsteps:{steps}\nscale:{scale}```")
-    msg = await ctx.respond(embed=embed1)#send text that will be used in generation
-    model = replicate.models.get("cjwbw/kandinsky-2")# get replicate model
-    version = model.versions.get("65a15f6e3c538ee4adf5142411455308926714f7d3f5c940d9f7bc519e0e5c1a")# get version of replicate model
-    image = version.predict(prompt=prompt, num_inference_steps=steps, guidance_scale=scale) # make a predict and get answer as url of image
-    embed2 = discord.Embed(title="Kandinsky Art", color=0xff0000,
-                           description=f"```prompt:{prompt}\nsteps:{steps}\nscale:{scale}```")
-    embed2.set_image(url=image)#set url of embed
-    await msg.edit_original_response(content=ctx.author.mention, embed=embed2) #edit first response with adding generated image
+import telegram
+from telegram.ext import CommandHandler, Updater
+from telegram import ParseMode
 
-bot.run(ds_token) #run the bot
+# Загружаем переменные token из .env файла
+load_dotenv()
+api_token = os.environ['TELEGRAM_API_TOKEN']
+
+# экземпляр бота Telegram
+bot = telegram.Bot(token=api_token)
+
+# функция для обработки команды /start
+def start(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id, 
+                             text="Привет! Я бот, который может создавать картины в стиле Кандинского. \
+                             С помощью команды /kandinsky ты можешь создать свою картину.")
+    
+# функция для обработки команды /kandinsky
+def kandinsky(update, context):
+    prompt = str(context.args[0]) # получаем текст запроса от пользователя
+    steps = int(context.args[1]) # получаем количество шагов
+    scale = float(context.args[2]) # получаем масштаб
+    model = replicate.models.get("cjwbw/kandinsky-2") # загружаем модель
+    version = model.versions.get("65a15f6e3c538ee4adf5142411455308926714f7d3f5c940d9f7bc519e0e5c1a") # загружаем версию модели
+    image = version.predict(prompt=prompt, num_inference_steps=steps, guidance_scale=scale) # генерируем изображение
+    context.bot.send_photo(chat_id=update.effective_chat.id, caption="Kandinsky Art",
+                           photo=image) # отправляем изображение
+
+# создаем обработчик команд для /start
+start_handler = CommandHandler('start', start)
+# создаем обработчик команд для /kandinsky
+kandinsky_handler = CommandHandler('kandinsky', kandinsky)
+
+# создаем экземпляр Updater
+updater = Updater(token=api_token, use_context=True)
+
+# добавляем обработчики команд в Updater
+updater.dispatcher.add_handler(start_handler)
+updater.dispatcher.add_handler(kandinsky_handler)
+
+# запускаем бота
+updater.start_polling()
