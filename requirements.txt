@@ -1,3 +1,4 @@
 replicate
 colorama
 python-dotenv
+python-telegram-bot
