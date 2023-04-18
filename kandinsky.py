@@ -1,6 +1,6 @@
 import os
 import replicate
-from aiongram import Bot, Dispatcher
+from aiogram import Bot, Dispatcher
 
 # Получить токены доступа для бота и модели из переменных окружения
 BOT_TOKEN = os.environ.get('BOT_TOKEN')
