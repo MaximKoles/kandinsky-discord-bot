@@ -6,7 +6,7 @@ import replicate
 from googletrans import Translator
 
 # устанавливаем токен для взаимодействия с Telegram API
-BOT_TOKEN = 'YOUR_BOT_TOKEN'
+BOT_TOKEN = 'TELEGRAM_BOT_TOKEN'
 # устанавливаем токен для взаимодействия с Replicate API
 REPLICATE_API_TOKEN = 'YOUR_REPLICATE_API_TOKEN'
 
@@ -31,11 +31,11 @@ async def translate_message(message: str):
 async def get_image(message: types.Message):
     try:
         print(f"Получено сообщение: {message.text}")
+        # отправляем сообщение о принятии запроса
+        processing_message = await bot.send_message(message.chat.id, "Ваш запрос обрабатывается, пожалуйста, подождите...")
         # переводим текст на английский язык
         input_text = await translate_message(message.text)
         print(f"Переведенный текст: {input_text}")
-        # отправляем сообщение о принятии запроса
-        processing_message = await bot.send_message(message.chat.id, "Ваш запрос обрабатывается, пожалуйста, подождите...")
         # запрашиваем изображение на Replicate
         image_url = await generate_image(input_text)
         print(f"Сгенерированное изображение: {image_url}")
@@ -45,7 +45,7 @@ async def get_image(message: types.Message):
         await bot.delete_message(chat_id=processing_message.chat.id, message_id=processing_message.message_id)
     except Exception as e:
         print(f"Ошибка: {e}")
-        await bot.send_message(message.chat.id, "Извините, произошла ошибка, повторите попытку позднее.")
+        await bot.send_message(message.chat.id, f"Извините, произошла ошибка - {e}, повторите попытку позднее.")
 
 
 # запускаем бота
