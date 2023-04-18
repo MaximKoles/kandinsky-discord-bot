@@ -30,15 +30,19 @@ async def translate_message(message: str):
 # функция, которая будет вызываться при отправке сообщений боту
 async def get_image(message: types.Message):
     try:
+        print(f"Получено сообщение: {message.text}")
         # переводим текст на английский язык
         input_text = await translate_message(message.text)
+        print(f"Переведенный текст: {input_text}")
         # запрашиваем изображение на Replicate
         image_url = await generate_image(input_text)
+        print(f"Сгенерированное изображение: {image_url}")
         # отправляем пользователю ссылку на сгенерированное изображение
         await bot.send_message(message.chat.id, f"Вот ваше изображение: {image_url}")
     except Exception as e:
         print(f"Ошибка: {e}")
         await bot.send_message(message.chat.id, "Извините, произошла ошибка, повторите попытку позднее.")
+
 
 # запускаем бота
 if __name__ == '__main__':
