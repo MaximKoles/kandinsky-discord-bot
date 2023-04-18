@@ -3,14 +3,12 @@ import aiogram
 from aiogram import types
 from aiogram.dispatcher import dispatcher
 import replicate
-from yandex.Translater import Translater  # импортируем класс Translater
+from googletrans import Translator
 
 # устанавливаем токен для взаимодействия с Telegram API
 BOT_TOKEN = 'YOUR_BOT_TOKEN'
 # устанавливаем токен для взаимодействия с Replicate API
 REPLICATE_API_TOKEN = 'YOUR_REPLICATE_API_TOKEN'
-# создаем класс переводчика Yandex
-translater = Translater()
 
 bot = aiogram.Bot(token=BOT_TOKEN)
 dp = aiogram.dispatcher.Dispatcher(bot)
@@ -23,16 +21,17 @@ async def generate_image(input_text: str):
     )
     return output[0]  # возвращаем ссылку на сгенерированное изображение
 
+# функция для перевода текста на английский язык
+async def translate_message(message: str):
+    translator = Translator()
+    translation = translator.translate(message, dest='en')
+    return translation.text
 
 # функция, которая будет вызываться при отправке сообщений боту
 async def get_image(message: types.Message):
     try:
-        # инициализируем объект Translater с параметрами
-        translater.set_key('YOUR_YANDEX_TRANSLATE_API_KEY')
-        translater.set_from_lang('ru')
-        translater.set_to_lang('en')
-        # переводим входной текст на английский язык
-        input_text = translater.translate(message.text)
+        # переводим текст на английский язык
+        input_text = await translate_message(message.text)
         # запрашиваем изображение на Replicate
         image_url = await generate_image(input_text)
         # отправляем пользователю ссылку на сгенерированное изображение
@@ -40,7 +39,6 @@ async def get_image(message: types.Message):
     except Exception as e:
         print(f"Ошибка: {e}")
         await bot.send_message(message.chat.id, "Извините, произошла ошибка, повторите попытку позднее.")
-
 
 # запускаем бота
 if __name__ == '__main__':
