@@ -34,11 +34,15 @@ async def get_image(message: types.Message):
         # переводим текст на английский язык
         input_text = await translate_message(message.text)
         print(f"Переведенный текст: {input_text}")
+        # отправляем сообщение о принятии запроса
+        processing_message = await bot.send_message(message.chat.id, "Ваш запрос обрабатывается, пожалуйста, подождите...")
         # запрашиваем изображение на Replicate
         image_url = await generate_image(input_text)
         print(f"Сгенерированное изображение: {image_url}")
         # отправляем пользователю ссылку на сгенерированное изображение
         await bot.send_message(message.chat.id, f"Вот ваше изображение: {image_url}")
+        # удаление сообщения об ожидании
+        await bot.delete_message(chat_id=processing_message.chat.id, message_id=processing_message.message_id)
     except Exception as e:
         print(f"Ошибка: {e}")
         await bot.send_message(message.chat.id, "Извините, произошла ошибка, повторите попытку позднее.")
