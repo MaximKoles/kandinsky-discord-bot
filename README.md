@@ -1,8 +1,3 @@
-# Kandinsky discord bot
-Here is tutorial and code of Kandinsky discord bot, check my [discord server](https://discord.gg/qX5dwV3HEp) with my AI image creator bot!
-#
-
-
 # Installation
 
 1. First we need to check that Python is installed and have 3.11 version(its important)
@@ -19,8 +14,8 @@ Python 3.11.0
 
 2. Now lets clone repository with bot by command below, if git isnt installed, install [it](https://git-scm.com/downloads)
 ```
-git clone https://github.com/MaximKoles/kandinsky-discord-bot
-cd kandinsky-discord-bot
+git clone https://github.com/MaximKoles/kandinsky-telegram-bot
+cd kandinsky-telegram-bot
 ```
 
 3. To install needed modules lets run this command:
@@ -37,10 +32,8 @@ pip install -U git+https://github.com/Pycord-Development/pycord
 
 1)First token that we need is Replicate api token, to get it enter [Replicate](https://replicate.com/) website, Login or Register if you not, then go to your profile page and copy token, save it somewhere
 
-2)Second token is a discord bot token, to get it enter [Discord Application page](https://discord.com/developers/applications), create new application or use another that is exist, enter bot category and copy its token, if bot isnt created - create, save your bot token somewhere
-IMPORTANT!!! All intents on discord bot page should be enabled
 
-6. Create new file in directory `kandinsky-discord-bot` with name `.env`, content of this file should be:
+6. Замените токены
 ```
 REPLICATE_API_TOKEN=<paste your replicate token here instead of this text and ><>
 TELEGRAM_BOT_TOKEN=<paste here your discord bot token instead of this text and ><>
@@ -62,7 +55,3 @@ This bot will have slash command /kandinsky that have options:
 `steps` - number of steps in 1-500
 `scale` - scale varioable is float and can be from 1 to 20
 Generation time depends on steps and scale value
-
-# Contact
-Discord tag: xeon-m#7477
-Discord server: https://discord.gg/qX5dwV3HEp 
