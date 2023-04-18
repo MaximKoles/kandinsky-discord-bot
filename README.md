@@ -19,7 +19,7 @@ Python 3.11.0
 
 2. Now lets clone repository with bot by command below, if git isnt installed, install [it](https://git-scm.com/downloads)
 ```
-git clone https://github.com/yoou3-cyber/kandinsky-discord-bot
+git clone https://github.com/MaximKoles/kandinsky-discord-bot
 cd kandinsky-discord-bot
 ```
 
