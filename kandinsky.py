@@ -4,7 +4,7 @@ import replicate
 from dotenv import load_dotenv
 import telegram
 from telegram.ext import CommandHandler, Updater
-from telegram import ParseMode
+from telegram.constants import ParseMode
 
 # Загружаем переменные token из .env файла
 load_dotenv()
