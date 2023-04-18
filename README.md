@@ -23,11 +23,6 @@ cd kandinsky-telegram-bot
 pip install -r requirements.txt
 ```
 
-4. IMPORTANT!! If you used libraries such as nextcord, disnake, discord, discord.py, DiscordUtils, etc... before, you need to uinstall them after uninstallation of them or if you didnt used them, you should run command to install py-cord:
-```
-pip install -U git+https://github.com/Pycord-Development/pycord
-```
-
 5.After all of this actions we need to get our api tokens:
 
 1)First token that we need is Replicate api token, to get it enter [Replicate](https://replicate.com/) website, Login or Register if you not, then go to your profile page and copy token, save it somewhere
